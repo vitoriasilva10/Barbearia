@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatórios - Barbearia Elite</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.resumo-box{
+    background:#1c1c1c;
+    padding:25px;
+    border-radius:12px;
+    margin-top:20px;
+}
+
+.resumo-box p{
+    margin:15px 0;
+    font-size:18px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="sidebar">
+
+<div class="logo">
+💈 BARBEARIA ELITE
+</div>
+
+<div class="menu">
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="clientes.html">👥 Clientes</a>
+<a href="agendamentos.html">📅 Agendamentos</a>
+<a href="financeiro.html">💰 Financeiro</a>
+<a href="relatorios.html">📊 Relatórios</a>
+<a href="login.html">🚪 Sair</a>
+</div>
+
+</div>
+
+<div class="content">
+
+<h1>📊 Relatórios</h1>
+
+<div class="cards">
+
+<div class="card">
+<h3>Total de Clientes</h3>
+<div class="numero" id="totalClientes">0</div>
+</div>
+
+<div class="card">
+<h3>Total de Agendamentos</h3>
+<div class="numero" id="totalAgendamentos">0</div>
+</div>
+
+<div class="card">
+<h3>Faturamento Total</h3>
+<div class="numero" id="totalFaturamento">R$ 0,00</div>
+</div>
+
+</div>
+
+<div class="resumo-box">
+
+<h2>Resumo Geral</h2>
+
+<p id="resumoClientes"></p>
+
+<p id="resumoAgendamentos"></p>
+
+<p id="resumoFinanceiro"></p>
+
+</div>
+
+</div>
+
+<script>
+
+const clientes =
+JSON.parse(localStorage.getItem("clientes")) || [];
+
+const agendamentos =
+JSON.parse(localStorage.getItem("agendamentos")) || [];
+
+const receitas =
+JSON.parse(localStorage.getItem("receitas")) || [];
+
+let faturamento = 0;
+
+receitas.forEach(item => {
+    faturamento += Number(item.valor);
+});
+
+document.getElementById("totalClientes")
+.innerText = clientes.length;
+
+document.getElementById("totalAgendamentos")
+.innerText = agendamentos.length;
+
+document.getElementById("totalFaturamento")
+.innerText = "R$ " + faturamento.toFixed(2);
+
+document.getElementById("resumoClientes")
+.innerText =
+"Quantidade de clientes cadastrados: " +
+clientes.length;
+
+document.getElementById("resumoAgendamentos")
+.innerText =
+"Quantidade de agendamentos registrados: " +
+agendamentos.length;
+
+document.getElementById("resumoFinanceiro")
+.innerText =
+"Faturamento acumulado: R$ " +
+faturamento.toFixed(2);
+
+</script>
+
+</body>
+</html>

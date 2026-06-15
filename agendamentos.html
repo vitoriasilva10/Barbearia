@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agendamentos - Barbearia Elite</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div class="sidebar">
+
+<div class="logo">
+💈 BARBEARIA ELITE
+</div>
+
+<div class="menu">
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="clientes.html">👥 Clientes</a>
+<a href="agendamentos.html">📅 Agendamentos</a>
+<a href="financeiro.html">💰 Financeiro</a>
+<a href="relatorios.html">📊 Relatórios</a>
+<a href="login.html">🚪 Sair</a>
+</div>
+
+</div>
+
+<div class="content">
+
+<h1>Agendamentos</h1>
+
+<div class="card">
+
+<input
+type="text"
+id="cliente"
+placeholder="Nome do Cliente">
+
+<input
+type="date"
+id="data">
+
+<input
+type="time"
+id="hora">
+
+<select id="servico">
+<option value="">Selecione um serviço</option>
+<option>Corte</option>
+<option>Barba</option>
+<option>Corte + Barba</option>
+<option>Sobrancelha</option>
+</select>
+
+<select id="status">
+<option>Agendado</option>
+<option>Concluído</option>
+<option>Cancelado</option>
+</select>
+
+<button onclick="adicionarAgendamento()">
+Agendar
+</button>
+
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Cliente</th>
+<th>Data</th>
+<th>Hora</th>
+<th>Serviço</th>
+<th>Status</th>
+<th>Ações</th>
+</tr>
+</thead>
+
+<tbody id="listaAgendamentos">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+let agendamentos =
+JSON.parse(localStorage.getItem("agendamentos")) || [];
+
+function salvarAgendamentos(){
+localStorage.setItem(
+"agendamentos",
+JSON.stringify(agendamentos)
+);
+}
+
+function adicionarAgendamento(){
+
+let cliente =
+document.getElementById("cliente").value;
+
+let data =
+document.getElementById("data").value;
+
+let hora =
+document.getElementById("hora").value;
+
+let servico =
+document.getElementById("servico").value;
+
+let status =
+document.getElementById("status").value;
+
+if(cliente === "" || data === "" || hora === "" || servico === ""){
+alert("Preencha todos os campos");
+return;
+}
+
+agendamentos.push({
+cliente,
+data,
+hora,
+servico,
+status
+});
+
+salvarAgendamentos();
+
+document.getElementById("cliente").value="";
+document.getElementById("data").value="";
+document.getElementById("hora").value="";
+document.getElementById("servico").value="";
+document.getElementById("status").value="Agendado";
+
+listarAgendamentos();
+
+}
+
+function listarAgendamentos(){
+
+let tabela =
+document.getElementById("listaAgendamentos");
+
+tabela.innerHTML = "";
+
+agendamentos.forEach((item,index)=>{
+
+tabela.innerHTML += `
+<tr>
+<td>${item.cliente}</td>
+<td>${item.data}</td>
+<td>${item.hora}</td>
+<td>${item.servico}</td>
+<td>${item.status}</td>
+
+<td>
+
+<button
+class="editar"
+onclick="editarAgendamento(${index})">
+Editar
+</button>
+
+<button
+class="excluir"
+onclick="excluirAgendamento(${index})">
+Excluir
+</button>
+
+</td>
+
+</tr>
+`;
+
+});
+
+}
+
+function editarAgendamento(index){
+
+let item = agendamentos[index];
+
+let cliente =
+prompt("Cliente:", item.cliente);
+
+if(cliente === null) return;
+
+let servico =
+prompt("Serviço:", item.servico);
+
+if(servico === null) return;
+
+let status =
+prompt("Status:", item.status);
+
+if(status === null) return;
+
+agendamentos[index] = {
+...item,
+cliente,
+servico,
+status
+};
+
+salvarAgendamentos();
+listarAgendamentos();
+
+}
+
+function excluirAgendamento(index){
+
+if(confirm("Deseja excluir este agendamento?")){
+
+agendamentos.splice(index,1);
+
+salvarAgendamentos();
+listarAgendamentos();
+
+}
+
+}
+
+listarAgendamentos();
+
+</script>
+
+</body>
+</html>

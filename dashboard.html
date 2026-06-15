@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - Barbearia Elite</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div class="sidebar">
+
+<div class="logo">
+💈 BARBEARIA ELITE
+</div>
+
+<div class="menu">
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="clientes.html">👥 Clientes</a>
+<a href="agendamentos.html">📅 Agendamentos</a>
+<a href="financeiro.html">💰 Financeiro</a>
+<a href="relatorios.html">📊 Relatórios</a>
+<a href="login.html">🚪 Sair</a>
+</div>
+
+</div>
+
+<div class="content">
+
+<h1>Dashboard</h1>
+
+<div class="cards">
+
+<div class="card">
+<h3>Total de Clientes</h3>
+<div class="numero" id="clientes">0</div>
+</div>
+
+<div class="card">
+<h3>Agendamentos</h3>
+<div class="numero" id="agendamentos">0</div>
+</div>
+
+<div class="card">
+<h3>Faturamento</h3>
+<div class="numero" id="faturamento">R$ 0,00</div>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Resumo do Sistema</h2>
+
+<p id="resumo1"></p>
+<br>
+<p id="resumo2"></p>
+<br>
+<p id="resumo3"></p>
+
+</div>
+
+</div>
+
+<script>
+
+const clientes =
+JSON.parse(localStorage.getItem("clientes")) || [];
+
+const agendamentos =
+JSON.parse(localStorage.getItem("agendamentos")) || [];
+
+const receitas =
+JSON.parse(localStorage.getItem("receitas")) || [];
+
+let total = 0;
+
+receitas.forEach(item=>{
+total += Number(item.valor);
+});
+
+document.getElementById("clientes")
+.innerText = clientes.length;
+
+document.getElementById("agendamentos")
+.innerText = agendamentos.length;
+
+document.getElementById("faturamento")
+.innerText = "R$ " + total.toFixed(2);
+
+document.getElementById("resumo1")
+.innerText =
+"Clientes cadastrados: " + clientes.length;
+
+document.getElementById("resumo2")
+.innerText =
+"Agendamentos registrados: " + agendamentos.length;
+
+document.getElementById("resumo3")
+.innerText =
+"Faturamento acumulado: R$ " +
+total.toFixed(2);
+
+</script>
+
+</body>
+</html>

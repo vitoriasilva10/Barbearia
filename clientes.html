@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clientes - Barbearia Elite</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div class="sidebar">
+
+<div class="logo">
+💈 BARBEARIA ELITE
+</div>
+
+<div class="menu">
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="clientes.html">👥 Clientes</a>
+<a href="agendamentos.html">📅 Agendamentos</a>
+<a href="financeiro.html">💰 Financeiro</a>
+<a href="relatorios.html">📊 Relatórios</a>
+<a href="login.html">🚪 Sair</a>
+</div>
+
+</div>
+
+<div class="content">
+
+<h1>Clientes</h1>
+
+<div class="card">
+
+<input
+type="text"
+id="nome"
+placeholder="Nome do cliente">
+
+<input
+type="text"
+id="telefone"
+placeholder="Telefone">
+
+<input
+type="email"
+id="email"
+placeholder="E-mail">
+
+<button onclick="adicionarCliente()">
+Cadastrar Cliente
+</button>
+
+</div>
+
+<div class="card">
+
+<input
+type="text"
+id="busca"
+placeholder="Buscar cliente..."
+onkeyup="buscarCliente()">
+
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Nome</th>
+<th>Telefone</th>
+<th>E-mail</th>
+<th>Ações</th>
+</tr>
+</thead>
+
+<tbody id="listaClientes">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+let clientes =
+JSON.parse(localStorage.getItem("clientes")) || [];
+
+function salvarClientes(){
+localStorage.setItem(
+"clientes",
+JSON.stringify(clientes)
+);
+}
+
+function adicionarCliente(){
+
+let nome =
+document.getElementById("nome").value;
+
+let telefone =
+document.getElementById("telefone").value;
+
+let email =
+document.getElementById("email").value;
+
+if(nome === "" || telefone === "" || email === ""){
+alert("Preencha todos os campos");
+return;
+}
+
+clientes.push({
+nome,
+telefone,
+email
+});
+
+salvarClientes();
+
+document.getElementById("nome").value="";
+document.getElementById("telefone").value="";
+document.getElementById("email").value="";
+
+listarClientes();
+
+}
+
+function listarClientes(){
+
+let tabela =
+document.getElementById("listaClientes");
+
+tabela.innerHTML = "";
+
+clientes.forEach((cliente,index)=>{
+
+tabela.innerHTML += `
+<tr>
+<td>${cliente.nome}</td>
+<td>${cliente.telefone}</td>
+<td>${cliente.email}</td>
+
+<td>
+
+<button
+class="editar"
+onclick="editarCliente(${index})">
+Editar
+</button>
+
+<button
+class="excluir"
+onclick="excluirCliente(${index})">
+Excluir
+</button>
+
+</td>
+
+</tr>
+`;
+
+});
+
+}
+
+function editarCliente(index){
+
+let cliente = clientes[index];
+
+let novoNome =
+prompt("Nome:", cliente.nome);
+
+if(novoNome === null) return;
+
+let novoTelefone =
+prompt("Telefone:", cliente.telefone);
+
+if(novoTelefone === null) return;
+
+let novoEmail =
+prompt("E-mail:", cliente.email);
+
+if(novoEmail === null) return;
+
+clientes[index] = {
+nome: novoNome,
+telefone: novoTelefone,
+email: novoEmail
+};
+
+salvarClientes();
+
+listarClientes();
+
+}
+
+function excluirCliente(index){
+
+if(confirm("Deseja excluir este cliente?")){
+
+clientes.splice(index,1);
+
+salvarClientes();
+
+listarClientes();
+
+}
+
+}
+
+function buscarCliente(){
+
+let termo =
+document.getElementById("busca")
+.value.toLowerCase();
+
+let linhas =
+document.querySelectorAll("#listaClientes tr");
+
+linhas.forEach(linha=>{
+
+let texto =
+linha.innerText.toLowerCase();
+
+linha.style.display =
+texto.includes(termo)
+? ""
+: "none";
+
+});
+
+}
+
+listarClientes();
+
+</script>
+
+</body>
+</html>
